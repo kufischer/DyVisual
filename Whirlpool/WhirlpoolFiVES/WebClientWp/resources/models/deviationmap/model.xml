@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xml3d style="width: 100%; height: 100%; background-color:rgb(215,212,203);">
+	<defs id="deviationMapDefs">
+		<shader id="colorShader" script="#colormap">
+			<texture name="colors">
+				<img class="colormap" src="textures/colors-discrete.png"></img>
+			</texture>
+			<float name="minimum" class="viz-minimum">-1</float>
+			<float name="maximum" class="viz-maximum">1</float>
+			<float name="threshold" class="viz-threshold">1.5</float>
+		</shader>
+	</defs>
+
+	<group id="root">
+		<mesh shader="#colorShader" compute="deviation = xflow.lerp1Seq(deviation, key)">
+			<data>
+				<data src="mesh.json"></data>
+				<data src="deviation.json"></data>
+				<float name="key" class="currentStep">1</float>
+			</data>
+		</mesh>
+	</group>
+    <view position="0 0 -180" orientation="1 0 0 3.1415"></view>
+</xml3d>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.w3.org/1999/xhtml">
+
+    <shader id="m001_head" script="urn:xml3d:shader:phong">
+        <float3 name="emissiveColor">0.0 0.0 0.0</float3>
+        <texture name="diffuseTexture">
+            <img src="./male_head_diff.png"/>
+        </texture>
+        <float3 name="specularColor">0.9 0.9 0.9</float3>
+        <float name="shininess">0.0</float>
+        <float name="transparency">0.0</float>
+        <float name="ambientIntensity">0.3</float>
+        <texture name="specularTexture">
+            <img src="./male_head_spec.png"/>
+        </texture>
+        <texture name="normalTexture">
+            <img src="./male_head_normal.png"/>
+        </texture>
+    </shader>
+    <shader id="m001_body" script="urn:xml3d:shader:phong">
+        <float3 name="emissiveColor">0.0 0.0 0.0</float3>
+        <texture name="diffuseTexture">
+            <img src="./male_body_diff1.png"/>
+        </texture>
+        <float3 name="specularColor">0.9 0.9 0.9</float3>
+        <float name="shininess">0.0</float>
+        <float name="transparency">0.0</float>
+        <float name="ambientIntensity">0.3</float>
+        <texture name="specularTexture">
+            <img src="./male_body_spec.png"/>
+        </texture>
+        <texture name="normalTexture">
+            <img src="./male_body_normal.png"/>
+        </texture>
+    </shader>
+
+    <data id="meshbase" filter="keep(position, normal, texcoord, boneIdx, boneWeight, boneParent, inverseBindPose)" src="male-shared.json" ></data>
+
+    <data id="male-body-index" src="male-body-index.json" filter="keep( index )" ></data>
+    <data id="male-head-index" src="male-head-index.json" filter="keep( index )" ></data>
+
+    <data id="male-trans" src="male-shared.json" filter="keep( {trans: init_translation} )" ></data>
+    <data id="male-rot" src="male-shared.json" filter="keep( {rot: init_rotation} )" ></data>
+
+
+</xml3d>

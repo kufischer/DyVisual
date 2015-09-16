@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.w3.org/1999/xhtml">
+<data id="minmax">
+<float key="10"  name="maximum">17.385</float>
+<float key="11"  name="maximum">19.3017</float>
+<float key="12"  name="maximum">18.0136</float>
+<float key="13"  name="maximum">17.2544</float>
+<float key="14"  name="maximum">16.9002</float>
+<float key="15"  name="maximum">18.9061</float>
+<float key="16"  name="maximum">18.8189</float>
+<float key="17"  name="maximum">16.7618</float>
+<float key="18"  name="maximum">16.8814</float>
+<float key="19"  name="maximum">16.9572</float>
+<float key="1"  name="maximum">19.4741</float>
+<float key="20"  name="maximum">18.9226</float>
+<float key="2"  name="maximum">16.9051</float>
+<float key="3"  name="maximum">16.9735</float>
+<float key="4"  name="maximum">18.4756</float>
+<float key="5"  name="maximum">20.7274</float>
+<float key="6"  name="maximum">17.1279</float>
+<float key="7"  name="maximum">18.7461</float>
+<float key="8"  name="maximum">16.8729</float>
+<float key="9"  name="maximum">16.821</float>
+<float key="10"  name="minimum">-2.15384</float>
+<float key="11"  name="minimum">-2.22613</float>
+<float key="12"  name="minimum">-2.12262</float>
+<float key="13"  name="minimum">-2.00709</float>
+<float key="14"  name="minimum">-1.85255</float>
+<float key="15"  name="minimum">-2.12898</float>
+<float key="16"  name="minimum">-1.96368</float>
+<float key="17"  name="minimum">-2.28126</float>
+<float key="18"  name="minimum">-2.00944</float>
+<float key="19"  name="minimum">-2.07336</float>
+<float key="1"  name="minimum">-1.95018</float>
+<float key="20"  name="minimum">-2.05851</float>
+<float key="2"  name="minimum">-1.92601</float>
+<float key="3"  name="minimum">-2.05169</float>
+<float key="4"  name="minimum">-2.10811</float>
+<float key="5"  name="minimum">-2.08932</float>
+<float key="6"  name="minimum">-2.02771</float>
+<float key="7"  name="minimum">-2.03569</float>
+<float key="8"  name="minimum">-2.02903</float>
+<float key="9"  name="minimum">-2.04219</float>
+
+</data>
+</xml3d>

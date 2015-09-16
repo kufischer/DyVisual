@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.xml3d.org/2009/xml3d">
+    <model src="#male-asset">
+        <asset id="male-asset">
+            <!-- shared data -->
+            <assetdata name="base" compute="dataflow['resources/models/male/protos.xml#skinning']">
+                <data src="male_defs.xml#meshbase" />
+                <data src="male_defs.xml#male-trans"/> <!-- Initial translation ><-->
+                <data src="male_defs.xml#male-rot"/>    <!-- Initial rotation ><-->
+                <float id="male-key" name="key">0</float>
+                <float3 id="male-trans" name="trans" key="1"/> <!-- translation from FiVES ><-->
+                <float4 id="male-rot" name="rot" key="1" /> <!-- rotation from FiVES ><-->
+            </assetdata>
+
+            <!-- meshes -->
+            <assetmesh name="body" shader="resources/models/male/male_defs.xml#m001_body" includes="base" >
+                <data src="male_defs.xml#male-body-index" />
+            </assetmesh>
+            <assetmesh name="head" shader="resources/models/male/male_defs.xml#m001_head" includes="base" >
+                <data src="male_defs.xml#male-head-index" />
+            </assetmesh>
+
+        </asset>
+    </model>
+</xml3d>

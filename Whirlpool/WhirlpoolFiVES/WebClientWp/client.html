@@ -1,0 +1,238 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>FIVES Test Client</title>
+        <!-- Framework CSS -->
+
+        <link rel="stylesheet" href="css/lib/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="css/lib/bootstrap-theme.css"></link>
+
+        <link rel="stylesheet" href="css/lib/xml3d-4.2/xml3d.css"></link>
+
+        <!-- Our CSS -->
+        <link rel="stylesheet/less" type="text/css" href="css/style.less"></link>
+
+		<link rel="stylesheet" type="text/css" media="all" href="app/public/style/normalize.css"></link>
+		<link rel="stylesheet" type="text/css" media="all" href="app/public/style/foundation.css"></link>
+		<link rel="stylesheet" type="text/css" media="all" href="app/public/style/font-awesome.min.css"></link>
+		<link rel="stylesheet" type="text/css" media="all" href="app/public/style/xml3d-blender-preview.css"></link>
+		<link rel="stylesheet" href="app/public/scripts/vendor/jquery-ui.min.css"></link>
+    </head>
+    <body>
+	<script id="colormap" type="application/javascript">
+    function shade(env) {
+        var d = env.deviation;
+        var objDiffuse;
+
+        if (d > env.threshold) {
+            return Shade.diffuse(new Vec3(0.2), env.normal);
+        } else if (d >= env.maximum) {
+            objDiffuse = new Vec3(1, 0, 0);
+        } else if (d <= env.minimum) {
+            objDiffuse = new Vec3(0, 0, 1);
+        } else {
+            var scale = 1 / (env.maximum - env.minimum);
+            var offset = env.minimum * scale;
+            objDiffuse = env.colors.sample2D(scale * d - offset, 0.5).rgb();
+        }
+
+        return Shade.emissive(objDiffuse);
+    }
+</script>
+        <div id="viewer">
+            <nav class = "navbar navbar-default">
+                <div class = "navbar-header">
+                    <div class = "navbar-brand">FiVES</div>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Create ... <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a data-toggle="modal" href="#create-entity-modal">Entity</a></li>
+                            <li><a href="#" onclick = "FIVES.Creation.EntityCreator.createRandomEntities(20);">Random Entities</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick = "FIVES.Testing.LocationUpdates.moveAllEntities(60);">Move Entities</a></li>
+                            <li><a href="#" onclick = "FIVES.Testing.LocationUpdates.spinAllEntities(60);;">Spin Entities</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                </div>
+            </nav>
+
+            <div style="margin-left: 5%; width: 90%; height: 90%">
+                <div  id = "xml3d_view">
+                    <xml3d xmlns = "http://www.xml3d.org/2009/xml3d"
+                           id="xml3dView"
+                           style="width: 100%; height: 100%;
+                           background-size:100% 100%;
+                           background-color: lightblue"
+                           activeView = "#camera">
+						<navigation speed="20"></navigation>
+                        <view id="camera" position = "0 0 10" ></view>
+                        <defs id="initalDefs">
+                            <transform id="t_Lamp" rotation="0.7070000171661377 0.7070000171661377 0 11.599999999999975"></transform>
+                            <lightshader id="ls_directional" script="urn:xml3d:lightshader:directional">
+                                <float3 name="intensity">0.9 0.9 1</float3>
+                            </lightshader>
+
+                        </defs>
+                        <group transform="#t_Lamp">
+                            <light shader="#ls_directional"></light>
+                        </group>
+                    </xml3d>
+                </div>
+            </div>
+
+            <div class="modal fade" id="signin-modal" data-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Please sign in</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" role="form" action="#" onsubmit="return false;">
+                                <div class="form-group">
+                                    <label for="signin-login" class="col-lg-2 control-label">Login</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="signin-login" placeholder="Enter login" autofocus="autofocus"></input>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="signin-password" class="col-lg-2 control-label">Password</label>
+                                    <div class="col-lg-10">
+                                        <input type="password" class="form-control" id="signin-password" placeholder="Enter password"></input>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <input type="submit" class="btn btn-primary start" id="signin-btn" value="Sign in"
+                                               data-loading-text="Signing in..."></input>
+                                        <span id="signin-failed" class="label label-danger" style="margin-left: 10px; display: none"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="create-entity-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class = "modal-header" >
+                            <h3>Create New Entity</h3>
+                        </div>
+                        <div class = "modal-body">
+                            <form class="form-inline" role = "form">
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="select-mesh" class="col-lg-2 control-label">Mesh:</label>
+                                    <div class="col-lg-10" style="margin-left: 90px; margin-top: -30px ">
+                                        <select class="form-control" id="select-mesh">
+                                            <option value="resources/models/firetruck/xml3d/firetruck.xml">Fire Truck</option>
+                                            <option value="resources/models/firetruck/xml3d/firetruck.xml">Fire Truck</option>
+                                            <option value="resources/models/firetruck/xml3d/firetruck.xml">Fire Truck</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-position-x" class="col-lg-2 control-label">Position:</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="input-position-x" placeholder="x" ></input>
+                                        <input type="text" class="form-control" id="input-position-y" placeholder="y" ></input>
+                                        <input type="text" class="form-control" id="input-position-z" placeholder="z" ></input>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-orientation-x" class="col-lg-2 control-label">Orientation:</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="input-orientation-x" placeholder="x" ></input>
+                                        <input type="text" class="form-control" id="input-orientation-y" placeholder="y" ></input>
+                                        <input type="text" class="form-control" id="input-orientation-z" placeholder="z" ></input>
+                                        <input type="text" class="form-control" id="input-orientation-w" placeholder="w" ></input>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-scale-x" class="col-lg-2 control-label">Scale:</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="input-scale-x" placeholder="x" ></input>
+                                        <input type="text" class="form-control" id="input-scale-y" placeholder="y" ></input>
+                                        <input type="text" class="form-control" id="input-scale-z" placeholder="z" ></input>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <button type="button" onclick="FIVES.Creation.EntityCreator.createEntityFromForm(); $('#create-entity-modal').modal('hide');" class="btn btn-primary">Create</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Script includes in body for faster page loading -->
+        <!-- <script type="text/javascript" src="scripts/lib/require.js" data-main="scripts/app.js"></script> -->
+
+		
+		<script src="app/public/scripts/vendor/modernizr.js"></script>
+		<script src="app/public/scripts/vendor/jquery.js"></script>
+		<script src="app/public/scripts/vendor/jquery-ui.min.js"></script>
+		<script src="app/public/scripts/foundation.min.js"></script>
+		<script src="app/scripts/xml3d.js" type="text/javascript"></script>
+		<script src="app/scripts/camera.js" type="text/javascript"></script>
+		<script src="app/scripts/shade.js" type="text/javascript"></script>
+		<script src="app/scripts/colorShader.js" type="text/javascript"></script>
+		<script src="app/scripts/lerpseq.js" type="text/javascript"></script>
+	
+        <script type="text/javascript" src="scripts/lib/underscore.js"></script>
+        <script type="text/javascript" src="scripts/lib/bootstrap-3.0.0/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="scripts/lib/eyelightShader.js"></script>
+        <script type="text/javascript" src="scripts/util/xml3d-motion.js"></script>
+        <script type="text/javascript" src="scripts/util/remote-xml3d-loader.js"></script>
+        <script type="text/javascript" src="scripts/util/template_loader.js"></script>
+
+        <script type="text/javascript" src="scripts/communication/fives_events.js"></script>
+        <script type="text/javascript" src="scripts/communication/fives_communicator.js"></script>
+
+        <script type="text/javascript" src="scripts/resources/resource_manager.js"></script>
+        <script type="text/javascript" src="scripts/resources/scene_manager.js"></script>
+
+        <script type="text/javascript" src="scripts/models/entity.js"></script>
+        <script type="text/javascript" src="scripts/models/entity_registry.js"></script>
+
+		<!--
+        <script type="text/javascript" src="scripts/plugins/avatar/avatar.js"></script>
+        <script type="text/javascript" src="scripts/plugins/avatar_collision/avatar_collision.js"></script>
+		-->
+        <script type="text/javascript" src="scripts/plugins/clientsync/clientsync.js"></script>
+        <script type="text/javascript" src="scripts/plugins/location/location.js"></script>
+        <script type="text/javascript" src="scripts/plugins/renderable/renderable.js"></script>
+        <script type="text/javascript" src="scripts/plugins/editing/editing.js"></script>
+        <!-- <script type="text/javascript" src="scripts/plugins/animation/animation.js"></script> -->
+        <script type="text/javascript" src="scripts/plugins/scripting/scripting.js"></script>
+        <script type="text/javascript" src="scripts/plugins/motion/motion.js"></script>
+        <script type="text/javascript" src="scripts/plugins/light/light.js"></script>
+		<script type="text/javascript" src="scripts/plugins/deviationmaps/deviationmaps.js"></script>
+        <script type="text/javascript" src="scripts/creation/entity_creator.js"></script>
+        <script type="text/javascript" src="scripts/input/keyboard_input.js"></script>
+
+        <script type="text/javascript" src="scripts/testing/location_updates.js"></script>
+		
+		<script type="text/javascript" src="scripts/lib/kiara.js"></script>
+		<script type="text/javascript" src="scripts/lib/websocket-json.js"></script>
+		<script type="text/javascript" src="scripts/app.js"></script>
+    </body>
+</html>
