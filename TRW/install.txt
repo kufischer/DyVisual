@@ -1,0 +1,7 @@
+1. Place the FiVES_BVH_Ext in the same directory as the official FiVES release
+
+2. Excute install.bat in the directory in which FiVES and FiVES_BVH_Ext are sitting
+
+3. Compile the FiVES
+
+4. Run FiVES.exe

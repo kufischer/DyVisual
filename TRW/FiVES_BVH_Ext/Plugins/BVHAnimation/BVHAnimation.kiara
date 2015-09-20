@@ -1,0 +1,13 @@
+﻿service BVHAnimation {
+	void startAnimation(string guid, string animationName, string configString, i32 timestamp);
+	void updateAnimation(string guid, string animationName, string configString, i32 timestamp);
+	void stopAnimation(string guid, string animationName, string revString, i32 timestamp);
+	void startAnimationINTERACT(string avatarID, i32 timestamp);
+	void stopAnimationINTERACT(string avatarID, i32 timestamp);
+	void pauseAnimationINTERACT(string avatarID, i32 timestamp);
+	void toggleConstraintsINTERACT(i32 timestamp);
+	void createAnimationEntity(string content, i32 timestamp);
+	void addMarker(string content, i32 timestamp);
+	void deleteMarker(string content, i32 timestamp);
+}
+

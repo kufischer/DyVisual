@@ -1,0 +1,20 @@
+{
+  "675": [
+    {
+      "event": "attach",
+      "parameters": {
+        "joint": "RightHand",
+        "target": "part_8556319"
+      }
+    }
+  ],
+  "1345": [
+    {
+      "event": "detach",
+      "parameters": {
+        "joint": "RightHand",
+        "target": "part_8556319"
+      }
+    }
+  ]
+}

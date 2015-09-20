@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>FIVES Test Client</title>
+        <!-- Framework CSS -->
+
+        <link rel="stylesheet" href="css/lib/bootstrap.min.css" />
+        <link rel="stylesheet" href="css/lib/bootstrap-theme.css" />
+
+        <link rel="stylesheet" href="css/lib/xml3d-4.2/xml3d.css" />
+
+        <!-- Our CSS -->
+        <link rel="stylesheet/less" type="text/css" href="css/style.less" />
+
+    </head>
+    <body>
+        <div id="viewer">
+            <nav class = "navbar navbar-default">
+                <div class = "navbar-header">
+                    <div class = "navbar-brand">FiVES</div>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Create ... <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a data-toggle="modal" href="#create-entity-modal">Entity</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <!--li><a href="#" onclick = "FIVES.Testing.BVHTester.btnStartAnimation();">Start BVH Animation</a></li-->
+                            <li><a data-toggle="modal" href="#create-new-BVHAnimation">Start BVH Animation</a></li>
+                            <li><a href="#" onclick = "FIVES.Testing.BVHTester.btnStopAnimation();">Stop BVH Animation</a></li>
+                            <li><a data-toggle="modal" href="#update-BVHAnimation">Update BVH Pose</a></li>
+                            <li><a href="#" onclick = "FIVES.Testing.BVHTester.btnInitPose();">Init Pose</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Markers<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <!--li><a href="#" onclick = "FIVES.Testing.BVHTester.btnStartAnimation();">Start BVH Animation</a></li-->
+                            <li><a data-toggle="modal" href="#add-marker">Add Marker</a></li>
+                            <li><a data-toggle="modal" href="#delete-marker">Remove Marker</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                </div>
+            </nav>
+
+            <div class = "row" style="height: 80%">
+                <div class = "col-md-9 col-md-offset-1" style="height: 100%" id = "xml3d_view">
+                    <xml3d xmlns = "http://www.xml3d.org/2009/xml3d"
+                           id="xml3dView"
+                           style="width: 100%; height: 80%;
+                           background-size:100% 100%;
+                           background-color: lightblue"
+                           activeView = "#camera">
+
+                        <navigation revolveAround="-3.6 -5.3 -230" speed="50"></navigation>
+
+                        <defs id="initalDefs">
+                            <shader id="Material1-fx" script="urn:xml3d:shader:phong">
+                                <float3 name="emissiveColor">0.0 0.0 0.0</float3>
+                                <float3 name="diffuseColor">1.0 0.92245 0.859</float3>
+                                <float3 name="specularColor">0.04316777 0.04316777 0.04316777</float3>
+                                <float name="shininess">0.25247306</float>
+                                <float name="ambientIntensity">0.0882353</float>
+                                <float name="transparency">0.0</float>
+                            </shader>
+                            <transform id="upaxis-transform" rotation="1.0 0.0 0.0 -1.57079632679 " />
+                            <transform id="t_Camera" translation="-98 322 -368" rotation="-0.08 -0.96 -0.25 2.5353" ></transform>
+                            <transform id="light_transform" rotation="1 0 0 -1"/>
+
+                            <lightshader id="ls" script="urn:xml3d:lightshader:directional"></lightshader>
+
+                        </defs>
+
+                        <group id="root_transformed" transform="#upaxis-transform">
+                            <group transform="#light_transform">
+                                <light shader="#ls"></light>
+                            </group>
+
+                            <group id="ground" >
+                                <group shader="#Material1-fx">
+                                    <mesh src="resources/models/male/scene_main-groundShape.json" type="triangles"/>
+                                </group>
+                            </group>
+                        </group>
+
+                        <group id="viewGroup" transform="#t_Camera">
+                            <view id="camera" fieldOfView="0.77699953"></view>
+                        </group>
+                        <!--view id="camera" fieldOfView="0.77699953"></view-->
+
+                    </xml3d>
+                </div>
+            </div>
+
+            <div class="modal fade" id="signin-modal" data-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Please sign in</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" role="form" action="#" onsubmit="return false;">
+                                <div class="form-group">
+                                    <label for="signin-login" class="col-lg-2 control-label">Login</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="signin-login" placeholder="Enter login" autofocus="autofocus"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="signin-password" class="col-lg-2 control-label">Password</label>
+                                    <div class="col-lg-10">
+                                        <input type="password" class="form-control" id="signin-password" placeholder="Enter password" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <input type="submit" class="btn btn-primary start" id="signin-btn" value="Sign in"
+                                               data-loading-text="Signing in..."/>
+                                        <span id="signin-failed" class="label label-danger" style="margin-left: 10px; display: none"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="create-new-BVHAnimation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class = "modal-header" >
+                            <h3>Create New BVHAnimation</h3>
+                        </div>
+                        <div class = "modal-body">
+                            <form class="form-inline" role = "form">
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-BVH" class="col-lg-2 control-label">Animation:</label>
+                                    <div class="col-lg-10" style="margin-left: 90px; margin-top: -30px ">
+                                        <input type="text" class="form-control" id="input-BVH" value="dummy.bvh"/>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-joint1" class="col-lg-2 control-label">File1:</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="input-file1" placeholder="File Name" value="MT2.txt"/>
+                                        <input type="text" class="form-control" id="input-joint1" placeholder="Joint Name" value="Spine"/>
+                                        <input type="text" class="form-control" id="input-axis1" placeholder="Axis Name" value="y"/>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-joint2" class="col-lg-2 control-label">File2:</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="input-file2" placeholder="File Name" value="MT3.txt"/>
+                                        <input type="text" class="form-control" id="input-joint2" placeholder="Joint Name" value="Spine"/>
+                                        <input type="text" class="form-control" id="input-axis2" placeholder="Axis Name" value="z"/>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-joint3" class="col-lg-2 control-label">File3:</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="input-file3" placeholder="File Name" value="MT14.txt"/>
+                                        <input type="text" class="form-control" id="input-joint3" placeholder="Joint Name" value="RightForeArm"/>
+                                        <input type="text" class="form-control" id="input-axis3" placeholder="Axis Name" value="y"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <button type="button" onclick="FIVES.Testing.BVHTester.btnStartAnimation(); $('#create-new-BVHAnimation').modal('hide');" class="btn btn-primary">Start</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="update-BVHAnimation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class = "modal-header" >
+                            <h3>Create New BVHAnimation</h3>
+                        </div>
+                        <div class = "modal-body">
+                            <form class="form-inline" role = "form">
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-BVH" class="col-lg-2 control-label">Animation:</label>
+                                    <div class="col-lg-10" style="margin-left: 90px; margin-top: -30px ">
+                                        <input type="text" class="form-control" id="default-BVH" value="dummy.bvh"/>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-joint1" class="col-lg-2 control-label">File1:</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="input-update-joint" placeholder="Joint Name" value="Spine"/>
+                                        <input type="text" class="form-control" id="input-update-axis" placeholder="Axis Name" value="y"/>
+                                        <input type="text" class="form-control" id="input-update-value" placeholder="Euler Angle"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <button type="button" onclick="FIVES.Testing.BVHTester.btnUpdateAnimation(); $('#update-BVHAnimation').modal('hide');" class="btn btn-primary">Update</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="create-entity-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class = "modal-header" >
+                            <h3>Create New Entity</h3>
+                        </div>
+                        <div class = "modal-body">
+                            <form class="form-inline" role = "form">
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="select-mesh" class="col-lg-2 control-label">Mesh:</label>
+                                    <div class="col-lg-10" style="margin-left: 90px; margin-top: -30px ">
+                                        <select class="form-control" id="select-mesh">
+                                            <option value="resources/models/male/male.xml">male</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-avatarID" class="col-lg-2 control-label">AvatarID:</label>
+                                    <div class="col-lg-10" style="margin-left: 90px; margin-top: -30px ">
+                                        <input type="text" class="form-control" id="input-avatarID" placeholder="Avatar ID" />
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-position-x" class="col-lg-2 control-label">Position:</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="input-position-x" placeholder="x" />
+                                        <input type="text" class="form-control" id="input-position-y" placeholder="y" />
+                                        <input type="text" class="form-control" id="input-position-z" placeholder="z" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <button type="button" onclick="FIVES.Testing.BVHTester.btnCreateBVHAnimationEntity(); $('#create-entity-modal').modal('hide');" class="btn btn-primary">Create</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="add-marker" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class = "modal-header" >
+                            <h3>Add Marker</h3>
+                        </div>
+                        <div class = "modal-body">
+                            <form class="form-inline" role = "form">
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="add-marker-select-mesh" class="col-lg-2 control-label">Marker Mesh:</label>
+                                    <div class="col-lg-10" style="margin-left: 90px; margin-top: -30px ">
+                                        <select class="form-control" id="add-marker-select-mesh">
+                                            <option value="resources/models/marker/marker.xml">sphere</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="add-marker-select-color" class="col-lg-2 control-label">Color:</label>
+                                    <div class="col-lg-10" style="margin-left: 90px; margin-top: -30px ">
+                                        <select class="form-control" id="add-marker-select-color">
+                                            <option value="red">red</option>
+                                            <option value="green">green</option>
+                                            <option value="blue">blue</option>
+                                            <option value="orange">orange</option>
+                                            <option value="yellow">yellow</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="add-marker-input-avatarID" class="col-lg-2 control-label">Target AvatarID:</label>
+                                    <div class="col-lg-10" style="margin-left: 90px; margin-top: -30px ">
+                                        <input type="text" class="form-control" id="add-marker-input-avatarID" placeholder="Avatar ID" />
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="add-marker-input-joint" class="col-lg-2 control-label">Target Joint:</label>
+                                    <div class="col-lg-10" style="margin-left: 90px; margin-top: -30px ">
+                                        <input type="text" class="form-control" id="add-marker-input-joint" placeholder="Joint Name" />
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="input-position-x" class="col-lg-2 control-label">Scale:</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="add-marker-input-scale-x" placeholder="x" />
+                                        <input type="text" class="form-control" id="add-marker-input-scale-y" placeholder="y" />
+                                        <input type="text" class="form-control" id="add-marker-input-scale-z" placeholder="z" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <button type="button" onclick="FIVES.Testing.BVHTester.btnAddMarker(); $('#add-marker').modal('hide');" class="btn btn-primary">Create</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="delete-marker" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class = "modal-header" >
+                            <h3>Delete Marker</h3>
+                        </div>
+                        <div class = "modal-body">
+                            <form class="form-inline" role = "form">
+                                <div class="form-group" style="margin-top:20px">
+                                    <label for="delete-marker-input-avatarID" class="col-lg-2 control-label">Target AvatarID:</label>
+                                    <div class="col-lg-10" style="margin-left: 90px; margin-top: -30px ">
+                                        <input type="text" class="form-control" id="delete-marker-input-avatarID" placeholder="Avatar ID" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <button type="button" onclick="FIVES.Testing.BVHTester.btnDeleteMarker(); $('#delete-marker').modal('hide');" class="btn btn-primary">Start</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Script includes in body for faster page loading -->
+        <script type="text/javascript" src="scripts/lib/require.js" data-main="scripts/app.js"></script>
+
+        <script type="text/javascript" src="scripts/lib/jquery.js"></script>
+        <script type="text/javascript" src="scripts/lib/underscore.js"></script>
+        <script type="text/javascript" src="scripts/lib/bootstrap-3.0.0/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="scripts/lib/xml3d/xml3d.js"></script>
+		<script type="text/javascript" src="scripts/lib/xml3d/xml3d.tools.js"></script>
+        <script type="text/javascript" src="scripts/lib/eyelightShader.js"></script>
+        <script type="text/javascript" src="scripts/util/xml3d-motion.js"></script>
+        <script type="text/javascript" src="scripts/util/remote-xml3d-loader.js"></script>
+        <script type="text/javascript" src="scripts/util/template_loader.js"></script>
+
+        <script type="text/javascript" src="scripts/communication/fives_events.js"></script>
+        <script type="text/javascript" src="scripts/communication/fives_communicator.js"></script>
+
+        <script type="text/javascript" src="scripts/resources/resource_manager.js"></script>
+        <script type="text/javascript" src="scripts/resources/scene_manager.js"></script>
+
+        <script type="text/javascript" src="scripts/models/entity.js"></script>
+        <script type="text/javascript" src="scripts/models/entity_registry.js"></script>
+
+        <!--<script type="text/javascript" src="scripts/plugins/avatar/avatar.js"></script>
+        <script type="text/javascript" src="scripts/plugins/avatar_collision/avatar_collision.js"></script>-->
+
+        <script type="text/javascript" src="scripts/plugins/clientsync/clientsync.js"></script>
+        <script type="text/javascript" src="scripts/plugins/location/location.js"></script>
+        <script type="text/javascript" src="scripts/plugins/renderable/renderable.js"></script>
+        <script type="text/javascript" src="scripts/plugins/editing/editing.js"></script>
+        <script type="text/javascript" src="scripts/plugins/animation/animation.js"></script>
+        <script type="text/javascript" src="scripts/plugins/scripting/scripting.js"></script>
+        <script type="text/javascript" src="scripts/plugins/motion/motion.js"></script>
+
+        <script type="text/javascript" src="scripts/creation/entity_creator.js"></script>
+        <script type="text/javascript" src="scripts/input/keyboard_input.js"></script>
+
+        <script type="text/javascript" src="scripts/testing/location_updates.js"></script>
+        <script type="text/javascript" src="scripts/testing/bvh_tester.js"></script>
+
+       <!-- <script type="text/javascript" src="scripts/lib/xml3d/xml3d-camera.js"></script>-->
+
+        <!-- MyScript!-->
+        <script type="text/javascript" src="scripts/plugins/BVHAnimation/bvhanimation.js"></script>
+        <script type="text/javascript" src="scripts/plugins/BVHAnimation/bvh_skeleton.js"></script>
+        <script type="text/javascript" src="scripts/plugins/BVHAnimation/bvh_marker.js"></script>
+        <script type="text/javascript" src="scripts/plugins/BVHAnimation/bvh_action.js"></script>
+
+        <script type="text/javascript">
+            $('.multi-field-wrapper').each(function() {
+                var $wrapper = $('.multi-fields', this);
+                $(".add-field", $(this)).click(function(e) {
+                    $('.multi-field:first-child', $wrapper).clone(true).appendTo($wrapper).find('input').val('').focus();
+                });
+                $('.multi-field .remove-field', $wrapper).click(function() {
+                    if ($('.multi-field', $wrapper).length > 1)
+                        $(this).parent('.col-lg-10').remove();
+                        console.log($(this).parents());
+                });
+            });
+		var targetViewGroup = $("#viewGroup")[0];
+		console.log(targetViewGroup);
+		var options = {
+				rotateSpeed: 5,
+				controls: {
+					rotationActivator: XML3D.tools.MOUSEBUTTON_RIGHT
+				}
+			};
+		var camera_controller = new XML3D.tools.MouseKeyboardFlyController(targetViewGroup, options);
+		camera_controller.setMoveSpeed(5);
+		console.log(camera_controller);
+		camera_controller.attach();
+		
+        </script>
+    </body>
+</html>

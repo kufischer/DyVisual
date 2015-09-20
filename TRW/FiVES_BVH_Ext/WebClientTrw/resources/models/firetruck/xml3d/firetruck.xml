@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.xml3d.org/2009/xml3d">
+    <model src="firetruck_defs.xml#firetruck-asset" transform="firetruck_defs.xml#root_transform"/>
+</xml3d>
