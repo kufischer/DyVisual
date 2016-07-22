@@ -2,14 +2,15 @@
 
 FIVESHOME=/root/fives
 WEBAPPS=/var/www
+WPHOME=/root/DyVisual/Whirlpool/WhirlpoolFiVES
 
 echo ${FIVESHOME}
 echo ${WEBAPPS}
 
-cp -r DeviationMaps ${FIVESHOME}/Plugins/DeviationMaps
+cp -r ${WPHOME}/DeviationMaps ${FIVESHOME}/Plugins/DeviationMaps
 
-cp -r WebClientWp ${WEBAPPS}
+cp -r ${WPHOME}/WebClientWp ${WEBAPPS}
 
-cp -f FiVES.sln ${FIVESHOME}
+cp -f ${WPHOME}/FiVES.sln ${FIVESHOME}
 
 
