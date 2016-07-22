@@ -11,6 +11,6 @@ cp -r ${WPHOME}/DeviationMaps ${FIVESHOME}/Plugins/DeviationMaps
 
 cp -r ${WPHOME}/WebClientWp ${WEBAPPS}
 
-cp -f ${WPHOME}/FiVES.sln ${FIVESHOME}
+cp -f ${WPHOME}/FIVES.sln ${FIVESHOME}
 
 
