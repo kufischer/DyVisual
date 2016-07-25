@@ -26,4 +26,4 @@ WORKDIR /root/fives/Binaries/Debug
 
 EXPOSE 8181 8081 34837 80
 
-CMD ["~/DyVisual/Docker/generic/start"]
+CMD ["/root/DyVisual/Docker/generic/start"]
