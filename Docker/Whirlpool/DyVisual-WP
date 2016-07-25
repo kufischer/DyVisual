@@ -11,10 +11,10 @@ RUN cd ~ \
 RUN cd ~ \
 	&& git clone https://github.com/kufischer/DyVisual.git
 
-RUN ~/DyVisual/Docker/Whirlpool/install.sh
-
 RUN apt-get update \
 	&& apt-get -y install apache2
+
+RUN ~/DyVisual/Docker/Whirlpool/install.sh
 
 RUN cd ~/fives \
 	&& nuget restore FIVES.sln \
