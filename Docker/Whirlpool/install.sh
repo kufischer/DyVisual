@@ -9,6 +9,8 @@ echo ${WEBAPPS}
 
 cp -r ${WPHOME}/DeviationMaps ${FIVESHOME}/Plugins/
 
+mkdir ${WEBAPPS}/WebClientWp
+
 cp -r ${WPHOME}/WebClientWp ${WEBAPPS}/WebClientWp
 
 cp -f ${WPHOME}/FIVES.sln ${FIVESHOME}
