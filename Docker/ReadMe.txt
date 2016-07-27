@@ -27,9 +27,23 @@ To run the created images use:
 
 make run IMAGE=<image>
 
+or
+
+make rund IMAGE=<image>
+
+where the run starts the Docker image in interactive mode, to make
+interaction with the FiVES server possible. rund starts the Docker
+image as a deamon without tty connection.
+
 To delete an image use:
 
 make remove IMAGE=<image>
+
+In case the image was started as a deamon use
+
+make remove-c IMAGE=<container-id>
+
+to delete the container.
 
 In these commands <image> needs to be replaced by the IMAGE ID. IMAGE
 ID is displayed in the last line of the creation output or can be
