@@ -11,6 +11,9 @@ RUN cd ~ \
 RUN cd ~ \
 	&& git clone https://github.com/kufischer/DyVisual.git
 
+#RUN sed -i 's/34837/22837/g' /root/fives/WebClient/kiara/fives.json
+#RUN sed -i 's/localhost/dw1.beincpps.eu/g' /root/fives/WebClient/kiara/fives.json
+
 RUN apt-get update \
 	&& apt-get -y install apache2
 
