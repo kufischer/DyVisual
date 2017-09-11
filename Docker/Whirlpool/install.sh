@@ -1,7 +1,7 @@
 #!/bin/bash
 
 FIVESHOME=/root/fives
-WEBAPPS=/var/www/
+WEBAPPS=/var/www/html/
 WPHOME=/root/DyVisual/Whirlpool/WhirlpoolFiVES
 
 echo ${FIVESHOME}
